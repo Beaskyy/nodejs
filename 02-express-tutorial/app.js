@@ -1,23 +1,15 @@
-const { readFileSync } = require("fs");
-const { createServer } = require("http");
+const express = require("express");
+const app = express();
 
-const homepage = readFileSync("./navbar-app/index.html");
-const stylesFile = readFileSync("./navbar-app/styles.css");
-const logo = readFileSync("./navbar-app/logo.svg");
-const menu = readFileSync("./navbar-app/browser-app.js");
-
-const server = createServer((req, res) => {
-  if (req.url === "/") {
-    res.writeHead(200, { "content-type": "text/html" });
-    res.write(homepage);
-    res.end();
-  } else if (req.url === "/styles.css") {
-    res.writeHead(200, { "content-type": "text/css" });
-    res.write(stylesFile);
-    res.end();
-  }
+app.get("/", (req, res) => {
+  console.log("page loaded");
+  res.send("Home page");
 });
 
-server.listen(5000, () => {
-  console.log("server listening on port 5000");
+app.get("/about", (req, res) => {
+  res.send("About page");
+})
+
+app.listen(5000, () => {
+  console.log("server listening on port 5000...");
 });
