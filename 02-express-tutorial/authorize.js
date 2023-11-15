@@ -1,7 +1,6 @@
 const authorize = (req, res, next) => {
-  const { user } = req.query;
 
-  if (req.user === "john") {
+  if (req.query.user === "john") {
     res.send({ name: "John", id: 3 });
     next();
   } else {
