@@ -1,21 +1,23 @@
-const express = require('express')
-const path = require('path')
+const express = require("express");
+const app = express();
 
-const app = express()
+app.use(express.static("./methods-public"));
+app.use(express.urlencoded({ extended: false }));
 
-// setup static and middleware
-app.use(express.static('./public'))
+let { people } = require("./data");
 
-// app.get('/', (req, res) => {
-//   res.sendFile(path.resolve(__dirname, './navbar-app/index.html'))
-//   adding to static assets
-//   SSR
-// })
+app.get("/api/people", (req, res) => {
+  res.status(200).json({ success: true, data: people });
+});
 
-app.all('*', (req, res) => {
-  res.status(404).send('resource not found')
-})
+app.post("/login", (req, res) => {
+  const {name} = req.body;
+  if(name) {
+    return res.status(200).send(`Welcome ${name}`)
+  }
 
+  res.status(401).send("Invalid username")
+});
 app.listen(5000, () => {
-  console.log('server is listening on port 5000....')
-})
+  console.log("server listening on port 5000...");
+});
