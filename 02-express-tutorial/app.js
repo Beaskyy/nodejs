@@ -10,24 +10,29 @@ app.use(express.static("./methods-public"));
 app.use(express.urlencoded({ extended: false }));
 
 // parse json
-app.use(express.json())
-
+app.use(express.json());
 
 app.get("/api/people", (req, res) => {
   res.status(200).json({ success: true, data: people });
 });
 
 app.post("/api/people", (req, res) => {
-  res.status(201).send({ success: true, data: people})
-})
+  const {name} = req.body;
+  if (!name) {
+    return res
+      .status(404)
+      .json({ success: false, msg: "please provide a name value" });
+  }
+  res.status(201).json({ success: true, person: name });
+});
 
 app.post("/login", (req, res) => {
-  const {name} = req.body;
-  if(name) {
-    return res.status(200).send(`Welcome ${name}`)
+  const { name } = req.body;
+  if (name) {
+    return res.status(200).send(`Welcome ${name}`);
   }
 
-  res.status(401).send("Invalid username")
+  res.status(401).send("Invalid username");
 });
 app.listen(5000, () => {
   console.log("server listening on port 5000...");
